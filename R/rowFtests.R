@@ -85,11 +85,14 @@ colFtests = function(x, fac,var.equal=TRUE)
 rowttests = function(x, fac, tstatOnly=FALSE) {
   if(is(x, "exprSet")) {
     if(is.character(fac))
-      fac = pData(x)[[fac]]
+      fac = as.integer(factor(pData(x)[[fac]]))-1
     x   = exprs(x)
   }
   
   f   = checkfac(fac)
+  if(f$nrgrp>2)
+    stop("Number of groups must be <= 2 for 'rowttests'.")
+  
   res = .Call("rowcolttests", x, f$fac, f$nrgrp,
                as.integer(0), PACKAGE="genefilter")
   if(!tstatOnly)
@@ -160,6 +163,9 @@ checkfac = function(fac) {
     fac   = as.integer(as.integer(fac)-1)
   } 
   if(!is.integer(fac))
-    stop("'fac' must be factor, character, numeric, or integer")
+    stop("'fac' must be factor, character, numeric, or integer.")
+  if(any(fac<0))
+    stop("'fac' must not be negative.")
+    
   return(list(fac=fac, nrgrp=nrgrp))
 }
