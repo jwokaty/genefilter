@@ -1,6 +1,6 @@
 Package: genefilter
 Title: genefilter: filter genes
-Version: 1.10.0
+Version: 1.10.1
 Date: 12 April 2006
 Author: R. Gentleman, V. Carey, W. Huber
 Description: Some basic functions for filtering genes
