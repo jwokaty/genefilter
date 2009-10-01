@@ -124,7 +124,17 @@ setMethod("nsFilter", "ExpressionSet",
               }
 
               if (require.entrez) {
+                chip = gsub(".db","",annChip)
+                con <- do.call(paste(chip, "_dbconn",sep=""), list())
+                if(dbmeta(con, "ORGANISM") == "Arabidopsis thaliana"){
+                  eset <- requireID(eset, "ACCNUM")
+                }
+                if(dbmeta(con, "ORGANISM") == "Saccharomyces cerevisiae"){
+                  eset <- requireID(eset, "ORF")
+                }
+                else{
                   eset <- requireID(eset, "ENTREZID")
+                }
               }
 
               filterGO <- function(eset, ontology) {
