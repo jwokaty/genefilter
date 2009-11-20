@@ -153,7 +153,7 @@ filterfun <- function(...) {
 
 .findCentralID <- function(chip){
     strMatch <- function(pat, s) length(grep(pat, s)) > 0
-    conn <- do.call(paste(chip, "_dbconn", sep=""), list())
+    conn <- getAnnMap("_dbconn", chip)()
     schema <- dbmeta(conn, "DBSCHEMA")
 
     ##This is NOT set up for ORG packages.
