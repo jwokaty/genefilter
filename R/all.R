@@ -152,7 +152,6 @@ filterfun <- function(...) {
  }
 
 .findCentralID <- function(chip){
-    strMatch <- function(pat, s) length(grep(pat, s)) > 0
     conn <- getAnnMap("_dbconn", chip)()
     schema <- dbmeta(conn, "DBSCHEMA")
 
@@ -161,7 +160,7 @@ filterfun <- function(...) {
       centID <- "ORF"
     else if( schema == "ARABIDOPSISCHIP_DB" )
       centID <- "ACCNUM"
-    else if( strMatch("CHIP_DB$", schema))
+    else if (length(grep("CHIP_DB$", schema)) > 0)
       centID <- "ENTREZID"
 
     return(centID)
@@ -169,8 +168,7 @@ filterfun <- function(...) {
 
 findLargest = function(gN, testStat, data="hgu133plus2") {
     centID <- .findCentralID(data)
-    
-    LLe = get(paste(data, centID, sep=""))
+    LLe = getAnnMap(centID, data)
     lls = unlist(mget(gN, LLe))
     if(length(testStat) != length(gN) )
         stop("testStat and gN must be the same length")
